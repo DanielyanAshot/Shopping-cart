@@ -1,0 +1,22 @@
+.Image{
+    height:100px;
+    width: 100px;
+}
+
+.CartItem{
+    margin: 30px;
+    height: 150px;
+    display: flex;
+}
+
+.productName{
+    font-weight: bold;
+}
+
+.productColor{
+    color: rgba(61, 66, 82, 0.753);
+}
+
+.totalPrice{
+    font-weight: bold;
+}

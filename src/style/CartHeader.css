@@ -1,0 +1,20 @@
+.cart {
+  margin-inline-start: 30px;
+  font-weight: bold;
+}
+
+.close {
+  width:40px;
+  height:40px;
+  float: right;;
+  border-radius: 30px;
+  border: none;
+  background-color:transparent;
+  transition-duration: 0.4s;
+  
+    font-weight: bold;
+}
+
+.close:hover{
+  font-size: 30px;
+}
