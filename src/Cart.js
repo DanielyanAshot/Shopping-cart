@@ -1,47 +1,59 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {CartHeader} from "./CartHeader";
 import {CartItemList} from "./CartItemList";
 import {CartFooter} from "./CartFooter";
 import "./style/Cart.css"
 
-/*   I used useState assuming that i might wanna change the data in the future  */
+
+
+
 
 export function Cart() {
+  const [data, setData] = useState();
+  const [subtotal, setSubtotal] = useState(0);
+  useEffect(() => {fetch("MOCK_DATA.json").then((response) => response.json()).then((response) => {
+    setTimeout(() =>{
+    setData(response)
+    setSubtotal(subtotalCalculator(response))
+  }, 5000)})}, [])
   
-  const [data, setData] = useState({
-    items: [{
-      price: 100,
-      image: "/Blendjet.png",
-      quantity: 1,
-      name: "Blendjet blender",
-      color: "Black"
-    },{
-      price: 250,
-      image: "/SKG.png",
-      quantity: 2,
-      name: "SKG blender",
-      color: "Red"
-    },{
-      price: 500,
-      image: "/Kuvings.png",
-      quantity: 3,
-      name: "Kuvings blender",
-      color: "White"
-    }],
-    subtotal(){
-      return this.items.reduce(function(aggr, item){
-        return aggr + item.price * item.quantity;
-        }, 0);
-      }
-      
+  function removeItem (id){
+    setData(() => {
+      const temp = data.filter(item => item.id !== id);
+      setSubtotal(subtotalCalculator(temp));
+      return temp;
     });
+  }
 
-      
+  function subtotalCalculator (res){
+    return res.reduce(function(aggr, item){
+      return aggr + item.price.slice(1) * item.quantity;
+    }, 0);
+  }
+  
+  
+
+  const onQuantityChange = (quantity, id) => {
+    const newData = data.map((item) => {
+      if(item.id === id){
+        return {...item, quantity}
+      }
+      return item;
+    })
+    setData([...newData]);
+    setSubtotal(subtotalCalculator(newData));
+   }
+
+  if(data){
+    return (
+        <div className="Cart">
+          <CartHeader />
+          <CartItemList data = {data} onQuantityChange = {onQuantityChange} removeItem = {removeItem}/>
+          <CartFooter subtotal = {subtotal}/>
+        </div>
+    )};
+  
   return (
-      <div className="Cart">
-        <CartHeader />
-        <CartItemList data = {data}/>
-        <CartFooter data = {data}/>
-      </div>
-    );
+    <div className = "loader"></div>
+  )
 }
