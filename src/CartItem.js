@@ -3,8 +3,8 @@ import "./style/CartItem.css";
 export function CartItem ({item, onQuantityChange,removeItem}) {
 
 
-    function quantityChange(e) {
-      onQuantityChange(e.target.value < 0 ? 0 : Math.round(e.target.value), item.id);
+    function inputChange(evt) {
+      onQuantityChange(evt.target.value < 0 ? 0 : Math.round(evt.target.value), item.id);
     }
 
     
@@ -18,8 +18,8 @@ export function CartItem ({item, onQuantityChange,removeItem}) {
            <span className = "productName">{item.name}</span>
            <div className = "productColor" style={{"backgroundColor":item.color}}></div>
            <div className = "quantityDiv">
-             <button className = "quantityChange" onClick = {() => onQuantityChange(item.quantity -1 ? 0: item.quantity -1, item.id)}>-</button>
-             <input className = "productQuantity" type = "number" value = {item.quantity} onChange={(e) => quantityChange(e)}></input>
+             <button className = "quantityChange" onClick = {() => onQuantityChange(item.quantity -1 < 0 ? 0: item.quantity -1, item.id)}>-</button>
+             <input className = "productQuantity" type = "number" value = {item.quantity} onChange={(evt) => inputChange(evt)}></input>
              <button className = "quantityChange" onClick = {() => onQuantityChange(item.quantity + 1, item.id)}>+</button>
            </div>
           </div>

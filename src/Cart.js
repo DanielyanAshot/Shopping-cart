@@ -5,9 +5,6 @@ import {CartFooter} from "./CartFooter";
 import "./style/Cart.css"
 
 
-
-
-
 export function Cart() {
   const [data, setData] = useState();
   const [subtotal, setSubtotal] = useState(0);
@@ -19,20 +16,18 @@ export function Cart() {
   
   function removeItem (id){
     setData(() => {
-      const temp = data.filter(item => item.id !== id);
-      setSubtotal(subtotalCalculator(temp));
-      return temp;
+      const newData = data.filter(item => item.id !== id);
+      setSubtotal(subtotalCalculator(newData));
+      return newData;
     });
   }
 
-  function subtotalCalculator (res){
-    return res.reduce(function(aggr, item){
+  function subtotalCalculator (newData){
+    return newData.reduce(function(aggr, item){
       return aggr + item.price.slice(1) * item.quantity;
     }, 0);
   }
   
-  
-
   const onQuantityChange = (quantity, id) => {
     const newData = data.map((item) => {
       if(item.id === id){
@@ -54,6 +49,9 @@ export function Cart() {
     )};
   
   return (
-    <div className = "loader"></div>
+    <div className = "loadingScreen">
+      <div className = "loader"></div>
+      <span className = "loading">Loading ...</span>
+    </div>
   )
 }
