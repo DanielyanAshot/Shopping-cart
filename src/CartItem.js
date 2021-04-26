@@ -1,11 +1,16 @@
+import { useCallback } from "react";
 import "./style/CartItem.css";
 
 export function CartItem ({item, onQuantityChange,removeItem}) {
 
 
-    function inputChange(evt) {
-      onQuantityChange(evt.target.value < 0 ? 0 : Math.round(evt.target.value), item.id);
-    }
+    const inputChange = useCallback((evt) => {
+      onQuantityChange(Math.max(0, Math.round(evt.target.value)), item.id);
+    }, [onQuantityChange, item]);
+
+    const buttonQuantityChanger = useCallback((evt) => {
+      onQuantityChange(evt.target.innerHTML === "+" ? item.quantity + 1 : Math.max(0, item.quantity - 1), item.id);
+    }, [onQuantityChange, item]);
 
     
     return (
@@ -18,9 +23,9 @@ export function CartItem ({item, onQuantityChange,removeItem}) {
            <span className = "productName">{item.name}</span>
            <div className = "productColor" style={{"backgroundColor":item.color}}></div>
            <div className = "quantityDiv">
-             <button className = "quantityChange" onClick = {() => onQuantityChange(item.quantity -1 < 0 ? 0: item.quantity -1, item.id)}>-</button>
-             <input className = "productQuantity" type = "number" value = {item.quantity} onChange={(evt) => inputChange(evt)}></input>
-             <button className = "quantityChange" onClick = {() => onQuantityChange(item.quantity + 1, item.id)}>+</button>
+             <button className = "quantityChange" onClick = {buttonQuantityChanger}>-</button>
+             <input className = "productQuantity" type = "number" value = {item.quantity} onChange = {inputChange}></input>
+             <button className = "quantityChange" onClick = {buttonQuantityChanger}>+</button>
            </div>
           </div>
           
